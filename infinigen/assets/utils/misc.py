@@ -125,8 +125,9 @@ def show_obj(obj, recursive=True):
     if obj.hide_render:
         obj.hide_render = False
     
-    for o in obj.objects:
-        show_obj(o, recursive)
+    if obj.name in bpy.data.collections:
+        for o in obj.objects:
+            show_obj(o, recursive)
 
 def assign_material(obj, material):
     if not isinstance(obj, list):
