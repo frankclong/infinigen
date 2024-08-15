@@ -115,6 +115,19 @@ def toggle_show(obj, recursive=True):
             for c in obj.children:
                 toggle_hide(c)
 
+def show_obj(obj, recursive=True):
+    if obj.hide_viewport:
+        obj.hide_viewport = False
+    if obj.hide_get():
+        obj.hide_set(False)
+    if obj.hide_select:
+        obj.hide_select = False
+    if obj.hide_render:
+        obj.hide_render = False
+    
+    if obj.name in bpy.data.collections:
+        for o in obj.objects:
+            show_obj(o, recursive)
 
 def assign_material(obj, material):
     if not isinstance(obj, list):

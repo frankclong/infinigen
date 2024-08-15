@@ -9,6 +9,7 @@ import math
 import shutil
 import subprocess
 from pathlib import Path
+from infinigen.assets.utils.misc import show_obj
 
 import bpy
 import gin
@@ -117,6 +118,7 @@ def split_glass_mats():
                 obj.material_slots
             ) >= 2:
                 logging.info(f"Splitting {obj}")
+                show_obj(obj)
                 obj.select_set(True)
                 bpy.context.view_layer.objects.active = obj
                 bpy.ops.object.mode_set(mode="EDIT")

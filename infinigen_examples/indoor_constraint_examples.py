@@ -1079,5 +1079,8 @@ def home_constraints():
         score_terms=score_terms,
     )
 
+def warehouse_constraints():
+    constraints = [rooms.count() == 1]
+    
 
 all_constraint_funcs = [home_constraints]
