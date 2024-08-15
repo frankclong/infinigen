@@ -707,4 +707,7 @@ AssetList = {
     # window
     "WindowFactory": window_materials,
     "RugFactory": rug_materials,
+    # warehouse
+    "RackFactory" : None,
+    "PalletFactory" : None,
 }

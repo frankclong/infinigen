@@ -82,6 +82,12 @@ class Semantics(EnumTag):
     Utensils = "utensils"
     ClothDrapeItem = "cloth-drape"
 
+    # Warehouse items
+    Pallet = "pallet"
+    Rack = "rack"
+    WarehouseBigItem = "warehouse-big-item"
+    WarehouseSmallItem = "warehouse-small-item"
+
     # Object Access Type
     AccessTop = "access-top"
     AccessFront = "access-front"
