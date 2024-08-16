@@ -189,6 +189,30 @@ def home_asset_usage():
 
     # endregion furniture
 
+    # region warehouse
+    used_as[Semantics.Rack] = {
+        elements.warehouses.RackFactory,
+    }
+
+    used_as[Semantics.Pallet] = {
+        elements.warehouses.PalletFactory,
+    }
+
+    # Customize as needed
+    used_as[Semantics.WarehouseBigItem] = {
+        appliances.TVFactory,
+        lamp.LampFactory,
+        lamp.FloorLampFactory,
+        lamp.DeskLampFactory,
+    }
+
+    used_as[Semantics.WarehouseSmallItem] = set().union(
+        used_as[Semantics.Dishware],
+        used_as[Semantics.Cookware],
+    )
+
+    # endregion warehouse
+
     used_as[Semantics.WallDecoration] = {
         wall_decorations.WallArtFactory,
         wall_decorations.MirrorFactory,
