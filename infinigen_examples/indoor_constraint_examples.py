@@ -1080,7 +1080,75 @@ def home_constraints():
     )
 
 def warehouse_constraints():
-    constraints = [rooms.count() == 1]
-    
+    used_as = home_asset_usage()
+    usage_lookup.initialize_from_dict(used_as)
 
-all_constraint_funcs = [home_constraints]
+    rooms = cl.scene()[{Semantics.Room, -Semantics.Object}]
+    obj = cl.scene()[{Semantics.Object, -Semantics.Room}]
+    cutters = cl.scene()[Semantics.Cutter]
+
+    window = cutters[Semantics.Window]
+    doors = cutters[Semantics.Door]
+
+    constraints = OrderedDict()
+    score_terms = OrderedDict()
+
+    constraints["room_count"] = rooms.count() == 1
+
+    # racks and pallets variables
+    racks = obj[Semantics.Rack]
+    pallets = obj[Semantics.Pallet]
+
+    # constraints - include racks, pallets, large items on racks, small items on pallets, pallets on racks
+    constraints["warehouse"] = rooms.all(
+        lambda r : (
+            racks.related_to(r, cu.on_floor).count() > 0
+            * racks.related_to(r, cu.on_floor).related_to_r(r, cu.against_wall).count() > 0
+            * obj[Semantics.WarehouseBigItem].related_to(racks, cu.on).count() > 0
+            * pallets.related_to(racks, cu.on).count() > 0
+            * obj[Semantics.WarehouseSmallItem].related_to(pallets, cu.ontop).count() > 0
+        )
+    )
+
+    # score terms - maximize number of items, ensure distance between racks, 
+    score_terms["warehouse"] = rooms.mean(
+        lambda r : (
+            racks.related_to(r).count().maximize(weight=5)
+            # + obj[Semantics.WarehouseBigItem].count()
+            + racks.mean(
+                lambda t: (
+                    t.distance(r, cu.walltags).pow(0.5)
+                    + t.distance(racks).pow(0.5)
+                )
+            ).maximize(weight=2)
+            + (pallets.count() / racks.volume()).hinge().minimize()
+            
+
+        )
+    )
+
+    # add hanging ceiling lights
+    lights = obj[Semantics.Lighting]
+    ceillights = lights[lamp.CeilingLightFactory]
+    constraints["ceiling_lights"] = rooms.all(
+        lambda r: (ceillights.related_to(r, cu.hanging).count().in_range(1, 3))
+    )
+    score_terms["ceiling_lights"] = rooms.mean(
+        lambda r: (
+            ceillights.mean(  
+                lambda t: (
+                    t.distance(r, cu.walltags).pow(0.5) * 1.5
+                    + t.distance(ceillights).pow(0.2) * 2
+                    + t.distance(racks).pow(0.5) * 0.5
+                )
+            ).maximize(weight=3)
+        )
+    )
+
+    return cl.Problem(
+        constraints=constraints,
+        score_terms=score_terms,
+    )
+
+
+all_constraint_funcs = [home_constraints, warehouse_constraints]
