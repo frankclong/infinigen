@@ -258,6 +258,10 @@ def home_asset_usage():
             elements.RugFactory,
             bathroom.HardwareFactory,
         },
+        used_as[Semantics.Rack],
+        used_as[Semantics.Pallet],
+        used_as[Semantics.WarehouseBigItem],
+        used_as[Semantics.WarehouseSmallItem]
     )
 
     # region Extra metadata about assets
