@@ -1114,7 +1114,8 @@ def warehouse_constraints():
     score_terms["warehouse"] = rooms.mean(
         lambda r : (
             racks.related_to(r).count().maximize(weight=5)
-            # + obj[Semantics.WarehouseBigItem].count()
+            + obj[Semantics.WarehouseBigItem].count().maximize(weight=3)
+            + obj[Semantics.WarehouseSmallItem].count().maximize(weight=0.5)
             + racks.mean(
                 lambda t: (
                     t.distance(r, cu.walltags).pow(0.5)
