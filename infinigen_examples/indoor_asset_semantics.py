@@ -201,9 +201,7 @@ def home_asset_usage():
     # Customize as needed
     used_as[Semantics.WarehouseBigItem] = {
         appliances.TVFactory,
-        lamp.LampFactory,
-        lamp.FloorLampFactory,
-        lamp.DeskLampFactory,
+        bathroom.ToiletFactory,
     }
 
     used_as[Semantics.WarehouseSmallItem] = set().union(

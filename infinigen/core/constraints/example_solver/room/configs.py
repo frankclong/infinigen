@@ -19,6 +19,7 @@ EXTERIOR_CONNECTED_ROOM_TYPES = [
     RoomType.DiningRoom,
     RoomType.Kitchen,
     RoomType.LivingRoom,
+    RoomType.Warehouse,
 ]
 SQUARE_ROOM_TYPES = [
     RoomType.Kitchen,
@@ -30,6 +31,7 @@ SQUARE_ROOM_TYPES = [
     RoomType.Balcony,
     RoomType.DiningRoom,
     RoomType.Utility,
+    RoomType.Warehouse,
 ]
 TYPICAL_AREA_ROOM_TYPES = {
     RoomType.Kitchen: 20,
@@ -43,8 +45,10 @@ TYPICAL_AREA_ROOM_TYPES = {
     RoomType.Balcony: 8,
     RoomType.Hallway: 8,
     RoomType.Staircase: 20,
+    RoomType.Warehouse: 100
 }
 ROOM_NUMBERS = {RoomType.Bathroom: (1, 10), RoomType.LivingRoom: (1, 10)}
+WAREHOUSE_ROOM_NUMBERS = {RoomType.Warehouse: (1,1)}
 COMBINED_ROOM_TYPES = [
     [RoomType.Hallway, RoomType.LivingRoom, RoomType.DiningRoom],
     [RoomType.Garage],
@@ -61,6 +65,7 @@ FUNCTIONAL_ROOM_TYPES = [
     RoomType.LivingRoom,
     RoomType.Bathroom,
     RoomType.DiningRoom,
+    RoomType.Warehouse
 ]
 WINDOW_ROOM_TYPES = defaultdict(
     lambda: 1,
@@ -69,6 +74,7 @@ WINDOW_ROOM_TYPES = defaultdict(
         RoomType.Closet: 0.0,
         RoomType.Bathroom: 0.5,
         RoomType.Garage: 0.5,
+        RoomType.Warehouse: 0,
     },
 )
 
@@ -89,6 +95,7 @@ def make_room_colors():
         RoomType.DiningRoom: hallway_color,
         RoomType.Utility: utility_color,
         RoomType.Staircase: hallway_color,
+        RoomType.Warehouse: utility_color,
     }
 
 
@@ -106,6 +113,7 @@ ROOM_CHILDREN = defaultdict(
             RoomType.DiningRoom: ("bool", 1.0),
             RoomType.Utility: ("bool", 0.2),
             RoomType.Hallway: ("categorical", 0.5, 0.4, 0.1),
+            RoomType.Warehouse: ("bool", 1.0)
         },
         RoomType.Kitchen: {
             RoomType.Garage: ("bool", 0.5),
@@ -179,6 +187,7 @@ ROOM_WALLS = defaultdict(
         ),
         RoomType.Balcony: ("weighted_choice", (1, brick), (5, plaster)),
         RoomType.Bathroom: ("weighted_choice", (1, tile), (3, advanced_tiles)),
+        RoomType.Warehouse: concrete
     },
 )
 
@@ -192,6 +201,7 @@ ROOM_FLOORS = defaultdict(
     ),
     {
         RoomType.Garage: concrete,
+        RoomType.Warehouse: concrete,
         RoomType.Utility: (
             "weighted_choice",
             (1, concrete),

@@ -21,6 +21,7 @@ room_types = {
     t.Semantics.DiningRoom,
     t.Semantics.Utility,
     t.Semantics.Staircase,
+    t.Semantics.Warehouse
 }
 
 all_sides = {t.Subpart.Bottom, t.Subpart.Top, t.Subpart.Front, t.Subpart.Back}

@@ -19,6 +19,7 @@ class RoomType:
     DiningRoom = "dining-room"
     Utility = "utility"
     Staircase = "staircase"
+    Warehouse = "warehouse"
 
 
 def get_room_type(name):
