@@ -1096,17 +1096,17 @@ def warehouse_constraints():
     # constraints["room_count"] = rooms.count() == 1
 
     # racks and pallets variables
-    racks = obj[Semantics.Rack]
-    pallets = obj[Semantics.Pallet]
+    racks = obj[Semantics.Rack][elements.warehouses.RackFactory]
+    pallets = obj[Semantics.Pallet][elements.warehouses.PalletFactory]
 
     # constraints - include racks, pallets, large items on racks, small items on pallets, pallets on racks
     constraints["warehouse"] = rooms.all(
         lambda r : (
-            (racks.related_to(r, cu.on_floor).count() > 0)
-            * (racks.related_to(r, cu.on_floor).related_to(r, cu.against_wall).count() > 0)
-            * (obj[Semantics.WarehouseBigItem].related_to(racks, cu.on).count() > 0)
-            * (pallets.related_to(racks, cu.on).count() > 0)
-            * (obj[Semantics.WarehouseSmallItem].related_to(pallets, cu.ontop).count() > 0)
+            (racks.related_to(r, cu.on_floor).count() >= 1)
+            * (racks.related_to(r, cu.on_floor).related_to(r, cu.against_wall).count() >= 1)
+            * (obj[Semantics.WarehouseBigItem].related_to(racks, cu.on).count() >= 1)
+            * (pallets.related_to(racks, cu.on).count() >= 1)
+            * (obj[Semantics.WarehouseSmallItem].related_to(pallets, cu.ontop).count() >= 1)
         )
     )
 
@@ -1122,9 +1122,7 @@ def warehouse_constraints():
                     + t.distance(racks).pow(0.5)
                 )
             ).maximize(weight=2)
-            + (pallets.count() / racks.volume()).hinge(0, 1e7).minimize(weight=1)
-            
-
+            # + (pallets.count() / racks.related_to(r, cu.on_floor).volume()).hinge(0, 1e7).minimize(weight=1)
         )
     )
 
