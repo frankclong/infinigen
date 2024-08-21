@@ -60,9 +60,10 @@ class RoomSolver:
         with tqdm(total=self.iterations, desc="Sampling solutions") as pbar:
             while pbar.n < self.iterations:
                 assignment_, info_ = deepcopy(assignment), deepcopy(info)
-                resp = self.solver.perturb_solution(assignment_, info_)
-                if not resp.is_success:
-                    continue
+                if len(info['segments']) > 1:
+                    resp = self.solver.perturb_solution(assignment_, info_)
+                    if not resp.is_success:
+                        continue
                 pbar.update(1)
                 score_ = self.scorer.find_score(assignment_, info_)
                 scale = self.score_scale * pbar.n / self.iterations

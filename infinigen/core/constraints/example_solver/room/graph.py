@@ -14,6 +14,7 @@ from infinigen.core.constraints.example_solver.room.configs import (
     LOOP_ROOM_TYPES,
     ROOM_CHILDREN,
     ROOM_NUMBERS,
+    WAREHOUSE_ROOM_NUMBERS,
     STUDIO_ROOM_CHILDREN,
     TYPICAL_AREA_ROOM_TYPES,
     UPSTAIRS_ROOM_CHILDREN,
@@ -39,7 +40,7 @@ class GraphMaker:
         room_children="home",
         typical_area_room_types=TYPICAL_AREA_ROOM_TYPES,
         loop_room_types=LOOP_ROOM_TYPES,
-        room_numbers=ROOM_NUMBERS,
+        room_numbers=WAREHOUSE_ROOM_NUMBERS,
         max_cycle_basis=1,
         requires_bathroom_privacy=True,
         entrance_type=("weighted_choice", (0.5, "porch"), (0.5, "hallway")),
@@ -88,7 +89,7 @@ class GraphMaker:
                     rooms.append(name)
                     queue.append(i)
 
-                add_room(RoomType.LivingRoom, None)
+                add_room(RoomType.Warehouse, None)
                 while len(queue) > 0:
                     i = queue.popleft()
                     for rt, spec in self.room_children[get_room_type(rooms[i])].items():

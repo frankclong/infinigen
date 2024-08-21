@@ -83,7 +83,7 @@ class BlueprintScorer:
             for i, a in enumerate(assignment)
         }
         scores = {}
-        if self.shortest_path_weight > 0:
+        if self.shortest_path_weight > 0 and len(self.graph.rooms) > 1:
             score = self.shortest_path_weight * self.shortest_path(assignment, info)
             scores["shortest_path"] = score
         if self.typical_area_weight > 0:

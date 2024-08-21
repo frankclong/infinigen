@@ -49,7 +49,7 @@ from infinigen.core.util.test_utils import (
     load_txt_list,
 )
 from infinigen.terrain import Terrain
-from infinigen_examples.indoor_constraint_examples import home_constraints
+from infinigen_examples.indoor_constraint_examples import home_constraints, warehouse_constraints
 from infinigen_examples.util import constraint_util as cu
 from infinigen_examples.util.generate_indoors_util import (
     apply_greedy_restriction,
@@ -143,7 +143,8 @@ def compose_indoors(output_folder: Path, scene_seed: int, **overrides):
 
     p.run_stage("sky_lighting", lighting.sky_lighting.add_lighting, use_chance=False)
 
-    consgraph = home_constraints()
+    # consgraph = home_constraints()
+    consgraph = warehouse_constraints()
     stages = default_greedy_stages()
     checks.check_all(consgraph, stages, all_vars)
 
@@ -161,6 +162,7 @@ def compose_indoors(output_folder: Path, scene_seed: int, **overrides):
                     t.Semantics.Kitchen,
                     t.Semantics.Bathroom,
                     t.Semantics.DiningRoom,
+                    t.Semantics.Warehouse,
                 ]
             )
         }

@@ -21,7 +21,8 @@ def global_params(
     unit=0.5,
     segment_margin=1.2,
     wall_thickness=("uniform", 0.2, 0.3),
-    wall_height=("uniform", 2.7, 3.8),
+    # wall_height=("uniform", 2.7, 3.8),
+    wall_height=("uniform", 10, 10),
 ):
     wall_thickness = rg(wall_thickness)
     wall_height = rg(wall_height)
